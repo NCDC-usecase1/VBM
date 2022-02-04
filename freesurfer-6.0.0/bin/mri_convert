@@ -1,0 +1,4 @@
+#!/bin/bash
+source $FREESURFER_HOME/bin/sources.sh
+cd $FREESURFER_HOME/bin
+./mri_convert.bin "$@"
