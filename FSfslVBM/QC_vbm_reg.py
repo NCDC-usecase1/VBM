@@ -26,8 +26,8 @@ def detect_bad_mri (quantile, region_data, settings):
     mri_numbers, voxels_numbers=region_data.shape
     Min=quantile[settings[0]-1]
     Max=quantile[settings[1]-1]
-    r1=np.array([len(np.where(region_data[i,:]<Min)[0])/float(voxels_numbers) for i in xrange(mri_numbers) ])
-    r2=np.array([len(np.where(region_data[i,:]>Max)[0])/float(voxels_numbers) for i in xrange(mri_numbers) ])
+    r1=np.array([len(np.where(region_data[i,:]<Min)[0])/float(voxels_numbers) for i in range(mri_numbers) ])
+    r2=np.array([len(np.where(region_data[i,:]>Max)[0])/float(voxels_numbers) for i in range(mri_numbers) ])
     result=r1+r2
     return result
 
@@ -40,15 +40,15 @@ def check_denstity(region_data, tissue_threshold):
 def region_summary(data_path, region_code, quantile_threshold, tissue_threshold):
 
     region_data=load_data(data_path, region_code)
-    print ('region code {0}'.format(region_code))
-    print ('region size {0}'.format(region_data.shape))
+    print('region code {0}'.format(region_code))
+    print('region size {0}'.format(region_data.shape))
 
     if isinstance(tissue_threshold, type(None)):
         pass
     else:
         include=check_denstity(region_data, tissue_threshold)
         region_data=region_data[:,include[0]]
-        print ('regions size after tissue threshold {0} '.format(region_data.shape))
+        print('regions size after tissue threshold {0} '.format(region_data.shape))
 
     q=region_quantile(region_data)
     settings=[quantile_threshold,100-quantile_threshold]
@@ -78,31 +78,31 @@ def qc_summary(work_dir,control_path,quantile_threshold):
 
     mean=np.mean(df, axis=1)
 
-    print ('##################################################')
-    print ("The mean percentage of outlier voxels in this study {0}. " \
+    print('##################################################')
+    print("The mean percentage of outlier voxels in this study {0}. " \
           "Should be less then quantile threshold {1} multiplied by 2 (two tails analysis) ".format(np.mean(mean)*100,quantile_threshold))
 
     outlier_index=list(np.where(mean>np.mean(mean)+np.std(mean)*3)[0])
 
     if len(outlier_index)!=0:
-        print ('##################################################')
-        print ('Check this images! They have too many outliers! Info save to {}'.format(os.path.join(control_path,'outlier_mri_id.csv')))
-        print ("Info", mean[np.where(mean>np.mean(mean)+np.std(mean)*3)[0]])
+        print('##################################################')
+        print('Check this images! They have too many outliers! Info save to {}'.format(os.path.join(control_path,'outlier_mri_id.csv')))
+        print("Info", mean[np.where(mean>np.mean(mean)+np.std(mean)*3)[0]])
 
         outlier_mri_id=[ i for i in mean[outlier_index].index.tolist()]
         pd.DataFrame.from_dict({'mri':outlier_mri_id,'outlier proportion':mean[outlier_index] } ).to_csv(os.path.join(control_path,'outlier_mri_id.csv'))
     else:
-        print ("There is no outliers.")
+        print("There is no outliers.")
 
-    print ('##################################################')
-    print ("You can use table {0} in {1} for additional analysis." \
+    print('##################################################')
+    print("You can use table {0} in {1} for additional analysis." \
           " Rows are image names, columns - chunk number. Cell value = The percentage of outlier voxels in chunk.".format('control.csv', control_path))
-    print ("____________________________")
-    print ("For Example in python shell or ipython:")
-    print ("$>import pandas as pd")
-    print ("Read this table by typing in mri_control directory command: $> df=pd.read_csv('control.csv', index_col=0) ")
-    print ("Then print summary $> print df.T.describe()")
-    print ("____________________________")
+    print("____________________________")
+    print("For Example in python shell or ipython:")
+    print("$>import pandas as pd")
+    print("Read this table by typing in mri_control directory command: $> df=pd.read_csv('control.csv', index_col=0) ")
+    print("Then print summary $> print df.T.describe()")
+    print("____________________________")
 
 
 
@@ -121,7 +121,7 @@ if __name__=='__main__':
 
 
     args = parser.parse_args()
-    print (args)
+    print(args)
     data_path=args.i
     region_code=args.code
     save_path=args.o

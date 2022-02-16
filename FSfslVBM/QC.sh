@@ -1,5 +1,5 @@
-
-#Prepare working directorywhile getopts ":i:o:f:v:n:t:c:e:" opt; do
+#!/bin/bash
+#Prepare working directory
 
 while getopts ":i:o:" opt; do
     case $opt in
@@ -25,7 +25,7 @@ if [ -z "$FREESURFER_HOME" ]; then
 	exit 2
 fi
 
-mkdir -p $OUTPUT/QC
+mkdir -p $OUTPUT/QC 
 mkdir -p $OUTPUT/nparray
 mkdir -p $OUTPUT/np_logs
 
@@ -48,3 +48,4 @@ done
 
 # run QC with mode summary
 python3 QC_vbm_reg.py  -mode summary -i $OUTPUT/nparray -o $OUTPUT/QC -logs $OUTPUT/np_logs -q 10
+
