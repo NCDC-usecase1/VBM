@@ -43,13 +43,13 @@ def convert_array_for_regression(path_4d, region_code, split_size=1000):
     while True:
         try:
             regression_data.append(np.load( os.path.join(path_4d, str(region_code) +'_'+str(p) + ".npy" ) ) )
-            print str(region_code) +'_' +str(p) + ".npy"
+            print (str(region_code) +'_' +str(p) + ".npy")
             p+=1
         except:
             break
 
     regression_data=np.concatenate(regression_data)
-    print "Region {}, regression data size {}, will be split by {} voxels chunks ".format(region_code,regression_data.shape, split_size)
+    print ("Region {}, regression data size {}, will be split by {} voxels chunks ".format(region_code,regression_data.shape, split_size))
     sample_size, number_voxels=regression_data.shape
     d=number_voxels/split_size
     r=number_voxels-d*split_size
@@ -81,7 +81,7 @@ def save_4d_data(Hammer_atlas, image_path, path_4d, image_names):
     data_4d={i:[] for i in region_codes}
 
     for im in image_names:
-        print im
+        print (im)
         try:
             images_data=nipy.load_image(os.path.join(image_path, im ))._data
             for k in data_4d:
@@ -92,7 +92,7 @@ def save_4d_data(Hammer_atlas, image_path, path_4d, image_names):
     for c in region_codes:
             c=int(c)
             np_4d=np.array(data_4d[c])
-            print np_4d.shape
+            print (np_4d.shape)
             np.save(os.path.join(path_4d, str(c) +"_" + str(1)) ,  np_4d )
             convert_array_for_regression(path_4d, c)
             delete_arrays(path_4d, c)
@@ -107,7 +107,7 @@ def save_4d_data_region(logs_dir, atlas, image_path, path_4d, region_code, regex
 
     if len(image_names)<1000:
         if int(region_code)!=0:
-            print 'FORCE MULTI JOBS SUBMISSION ( NOT EFFICIENT)'
+            print ('FORCE MULTI JOBS SUBMISSION ( NOT EFFICIENT)')
         elif int(region_code)==0:
             save_4d_data(atlas, image_path, path_4d, image_names)
 
@@ -164,10 +164,10 @@ if __name__=="__main__":
     parser.add_argument("-logs",type=str,required=True, help="path to save logs")
 
     args = parser.parse_args()
-    print args
+    print (args)
     with Timer() as t:
        experiment_save_4d(args.logs, args.atlas, args.i, args.o, args.code, args.regexp)
-    print "save data for analysis %s s" %(t.secs)
+    print ("save data for analysis %s s" %(t.secs))
 
 
 
