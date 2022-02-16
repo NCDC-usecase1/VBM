@@ -1,7 +1,29 @@
 
-#Prepare working directory
-IMAGE=$1
-OUTPUT=$2
+#Prepare working directorywhile getopts ":i:o:f:v:n:t:c:e:" opt; do
+
+while getopts ":i:o:" opt; do
+    case $opt in
+    i) IMAGE=$OPTARG ;;
+    o) OUTPUT=$OPTARG ;;
+    \?)
+        echo "Invalid option: -$OPTARG" >&2
+        exit 1
+        ;;
+    :)
+        echo "Option -$OPTARG requires an argument." >&2
+        exit 1
+        ;;
+    esac
+done
+
+if [ -z "$IMAGE" ]; then
+	echo " need -i full path vbm nifti results (niftis)"
+	exit 2
+fi
+if [ -z "$FREESURFER_HOME" ]; then
+	echo "need -f path to specify where to save QC stats and logs ) "
+	exit 2
+fi
 
 mkdir -p $OUTPUT/QC
 mkdir -p $OUTPUT/nparray
