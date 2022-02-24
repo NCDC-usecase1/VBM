@@ -20,7 +20,7 @@ if [ -z "$IMAGE" ]; then
 	echo " need -i full path vbm nifti results (niftis)"
 	exit 2
 fi
-if [ -z "$FREESURFER_HOME" ]; then
+if [ -z "$OUTPUT" ]; then
 	echo "need -f path to specify where to save QC stats and logs ) "
 	exit 2
 fi
@@ -32,7 +32,7 @@ mkdir -p $OUTPUT/np_logs
 
 # Convert niftis to nparrays 
 
-for i in $(seq 0 118);
+for i in $(seq 1 188);
 do
     python3 nii2np.py -i $IMAGE -o $OUTPUT/nparray -atlas ./brain_vbm_atlas.nii.gz -logs $OUTPUT/np_logs -code $i
 done
@@ -41,7 +41,7 @@ done
 
 # QC with mode region: Threshold recommended to be 10
 
-for i in $(seq 0 118);
+for i in $(seq 1 188);
 do
     python3 QC_vbm_reg.py  -mode region -i $OUTPUT/nparray -o $OUTPUT/QC -logs $OUTPUT/np_logs -code $i -q 10
 done
